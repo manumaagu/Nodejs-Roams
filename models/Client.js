@@ -12,7 +12,7 @@ const Client = sequelize.define("Client", {
     allowNull: false,
   },
   dni: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(9),
     unique: true,
     allowNull: false,
   },
