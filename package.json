@@ -13,8 +13,11 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.2",
+    "jsdoc": "^4.0.4",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "validator": "^13.12.0"
   }
 }

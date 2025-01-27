@@ -26,7 +26,61 @@ const validateDni = (req, res, next) => {
   next();
 };
 
-// Create a new simulation
+/**
+ * @swagger
+ * /api/simulation:
+ *   post:
+ *     summary: Creates a new loan simulation
+ *     description: Create a loan simulation for an existing client.
+ *     tags:
+ *      - Simulations
+ *     requestBody: 
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dni:
+ *                 type: string
+ *                 description: The DNI of the client to search for in the database
+ *                 example: "36300558A"
+ *               tae:
+ *                 type: number
+ *                 description: The Annual Equivalent Rate of the loan
+ *                 example: 3.2
+ *               term:
+ *                 type: integer
+ *                 description: The loan term in years
+ *                 example: 1
+ *     responses:
+ *       201:
+ *         description: Simulation successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 client_id:
+ *                   type: string
+ *                   example: "36300558A"
+ *                 tae:
+ *                   type: number
+ *                   example: 3.2
+ *                 term:
+ *                   type: integer
+ *                   example: 1
+ *                 monthly_payment:
+ *                   type: number
+ *                   example: 10.43
+ *                 total_amount:
+ *                   type: number
+ *                   example: 125.16
+ *       400:
+ *         description: Validation or calculation error
+ *       404:
+ *         description: Client not found
+ */
 router.post("/simulation", validateDni, async (req, res) => {
   let tae = "";
   let term = "";
@@ -65,10 +119,10 @@ router.post("/simulation", validateDni, async (req, res) => {
   try {
     const dbSimulation = await Simulation.create({
       client_id: dni,
-      tae: parseFloat(tae),
-      term: parseInt(term),
-      monthly_payment: parseFloat(monthly_payment),
-      total_amount: parseFloat(total_amount),
+      tae: tae,
+      term: term,
+      monthly_payment: monthly_payment,
+      total_amount: total_amount,
     });
 
     const simulation = {

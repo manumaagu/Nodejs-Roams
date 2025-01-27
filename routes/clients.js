@@ -25,7 +25,62 @@ const validateDni = (req, res, next) => {
   next();
 };
 
-// Create a new client
+/**
+ * @swagger
+ * /api/client:
+ *   post:
+ *     summary: Creates a new client
+ *     description: Create a new client in the database
+ *     tags:
+ *      - Clients
+ *     requestBody: 
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the client
+ *                 example: "John Doe"
+ *               email:
+ *                 type: string
+ *                 description: The email of the client
+ *                 example: "johndoe@email.com"
+ *               capital:
+ *                 type: number
+ *                 description: The requested capital of the client
+ *                 example: 1000
+ *               dni:
+ *                 type: string
+ *                 description: The DNI of the client
+ *                 example: "36300558A"
+ *     responses:
+ *       201:
+ *         description: Client successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   example: "John Doe"
+ *                 dni:
+ *                   type: string
+ *                   example: "36300558A"
+ *                 email:
+ *                   type: string
+ *                   example: "johndoe@email.com"
+ *                 capital:
+ *                   type: number
+ *                   example: 1000
+ *       400:
+ *         description: Validation error bad request
+ *       404:
+ *         description: Client not found
+ */
 router.post("/client", async (req, res) => {
   let name = "";
   let email = "";
@@ -93,7 +148,47 @@ router.post("/client", async (req, res) => {
   }
 });
 
-// List a client by DNI
+/**
+ * @swagger
+ * /api/client/{dni}:
+ *   get:
+ *     summary: Get client information by DNI
+ *     description: Get the information of a client by DNI.
+ *     tags:
+ *       - Clients
+ *     parameters:
+ *       - name: dni
+ *         in: path
+ *         description: The DNI of the client
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "36300558A"
+ *     responses:
+ *       200:
+ *         description: Client information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   example: "John Doe"
+ *                 dni:
+ *                   type: string
+ *                   example: "36300558A"
+ *                 email:
+ *                   type: string
+ *                   example: "johndoe@email.com"
+ *                 capital:
+ *                   type: number
+ *                   example: 1000
+ *       400:
+ *         description: Validation error or bad request
+ *       404:
+ *         description: Client not found
+ */
 router.get("/client/:dni", validateDni, async (req, res) => {
   const dni = req.params.dni.toUpperCase();
 
@@ -114,7 +209,46 @@ router.get("/client/:dni", validateDni, async (req, res) => {
   }
 });
 
-// Update client information by DNI
+/**
+ * @swagger
+ * /api/client/{dni}:
+ *   patch:
+ *     summary: Update client information by DNI
+ *     description: Update the information of a client by DNI
+ *     tags:
+ *      - Clients
+ *     parameters:
+ *       - name: dni
+ *         in: path
+ *         description: The DNI of the client
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "36300558A"
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *                example: "Jane Doe"
+ *              email:
+ *                type: string
+ *                example: "janedoe@email.com"
+ *              capital:
+ *                type: number
+ *                example: 2000
+ *     responses:
+ *       200:
+ *         description: Client information updated successfully
+ *       400:
+ *         description: Validation error bad request
+ *       404:
+ *         description: Client not found
+ */
 router.patch("/client/:dni", validateDni, async (req, res) => {
   const dni = req.params.dni.toUpperCase();
 
@@ -150,7 +284,30 @@ router.patch("/client/:dni", validateDni, async (req, res) => {
   }
 });
 
-// Delete a client by DNI
+/**
+ * @swagger
+ * /api/client/{dni}:
+ *   delete:
+ *     summary: Delete client by DNI
+ *     description: Delete a client by DNI
+ *     tags:
+ *      - Clients
+ *     parameters:
+ *       - name: dni
+ *         in: path
+ *         description: The DNI of the client
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "36300558A"
+ *     responses:
+ *       200:
+ *         description: Client deleted successfully
+ *       400:
+ *         description: Validation error bad request
+ *       404:
+ *         description: Client not found
+ */
 router.delete("/client/:dni", validateDni, async (req, res) => {
   const dni = req.params.dni.toUpperCase();
 
