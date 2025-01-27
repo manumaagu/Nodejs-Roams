@@ -34,7 +34,7 @@ const validateDni = (req, res, next) => {
  *     description: Create a loan simulation for an existing client.
  *     tags:
  *      - Simulations
- *     requestBody: 
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
@@ -85,6 +85,21 @@ router.post("/simulation", validateDni, async (req, res) => {
   let tae = "";
   let term = "";
   let dni = req.body.dni.toUpperCase();
+
+  const allowedFields = ["tae", "term", "dni"];
+  const receivedFields = Object.keys(req.body);
+
+  const invalidFields = receivedFields.filter(
+    (field) => !allowedFields.includes(field)
+  );
+
+  if (invalidFields.length > 0) {
+    return res
+      .status(400)
+      .json({
+        error: `Invalid field(s) in the body: ${invalidFields.join(", ")}`,
+      });
+  }
 
   if (req.body.tae) {
     tae = parseFloat(req.body.tae);
